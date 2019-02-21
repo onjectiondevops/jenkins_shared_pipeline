@@ -2,5 +2,5 @@
 package onjection.pipelines;
 
 def build() {
-  java -version
+  sh 'java -version'
 }
