@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-def checkjava() {
+def call() {
 	sh 'java -version'
 
 	}
