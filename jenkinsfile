@@ -1,5 +1,5 @@
 @Library('pipeline-library-demo')_
 
 stage('Check version') {
-	checkjavaversion
+	checkjavaversion()
 }
