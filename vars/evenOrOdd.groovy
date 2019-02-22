@@ -3,7 +3,6 @@ def call(int buildNumber) {
         stage('Initialize Workspace') {
             echo "The build number is even"
 	    deleteDir()
-	    //sh "ls -lhtr /"
           }
     }
 }
