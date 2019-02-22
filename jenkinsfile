@@ -1,7 +1,7 @@
 @Library('pipeline-library-demo')_
 import io.abc.*
 pl = new pipeline()
-stage(){
+stage('Initilize workspac'){
 	pl.build()
 }
 
