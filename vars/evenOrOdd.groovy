@@ -1,8 +1,12 @@
 def call(int buildNumber) {
     pipeline {
+      agent any
+      stages {
         stage('Initialize Workspace') {
-            echo "The build number is even"
+          steps {
 	    deleteDir()
           }
+        }
+      }
     }
 }
