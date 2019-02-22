@@ -1,3 +1,6 @@
+node{
 @Library('pipeline-library-demo')_
-workSpaceCleanup()
-javaversion()
+	workSpaceCleanup()
+	javaversion()
+
+}
