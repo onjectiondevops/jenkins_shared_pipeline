@@ -1,4 +1,4 @@
-def call(int buildNumber) {
+def call() {
     pipeline {
       agent any
       stages {
