@@ -2,4 +2,4 @@
 import onjection.pipelines.* 
 
 def z = new onjection.pipelines.Zot()
-z.checkOutFrom(repo)
+z.checkOutFrom('https://github.com/gcamp/GCPlaceholderTextView.git')
