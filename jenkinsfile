@@ -1,9 +1,7 @@
 @Library('pipeline-library-demo')_
 import io.abc.*
-pl = new pipeline()
+pl = new workspacecleanup()
 node{
-	stage('Initilize workspac'){
-		pl.build()
-  	}
+	pl.cleanup()
 }
 
