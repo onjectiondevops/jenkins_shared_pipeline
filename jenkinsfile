@@ -1,6 +1,5 @@
-node{
 @Library('pipeline-library-demo')_
-	workSpaceCleanup()
-	javaversion()
+import onjection.pipelines.* 
 
-}
+def z = new onjection.pipelines.Zot()
+z.checkOutFrom(repo)
