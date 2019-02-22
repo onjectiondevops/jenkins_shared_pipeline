@@ -1,7 +1,3 @@
 @Library('pipeline-library-demo')_
+evenOrOdd(currentBuild.getNumber())
 
-import onjection.pipelines.*
-
-pl = new pipeline()
-// work
-pl.build()
