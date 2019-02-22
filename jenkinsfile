@@ -1,8 +1,7 @@
-node{
-
- @Library('pipeline-library-demo')_
- import io.abc.*
- pl = new pipeline()
- pl.build()
-
+@Library('pipeline-library-demo')_
+import io.abc.*
+pl = new pipeline()
+stage(){
+	pl.build()
 }
+
