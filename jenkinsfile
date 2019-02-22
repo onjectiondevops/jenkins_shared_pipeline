@@ -1,5 +1,5 @@
 @Library('pipeline-library-demo')_
 import onjection.pipelines.* 
 
-def z = new onjection.pipelines.Zot()
+def z = new Zot()
 z.checkOutFrom('https://github.com/gcamp/GCPlaceholderTextView.git')
