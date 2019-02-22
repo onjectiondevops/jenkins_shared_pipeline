@@ -1,6 +1,6 @@
 @Library('pipeline-library-demo')_
 import io.abc.*
-pl = new workspacecleanup()
+pl = new workspaceclean()
 node{
 	pl.cleanup()
 }
