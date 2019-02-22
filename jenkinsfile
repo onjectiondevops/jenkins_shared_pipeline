@@ -1,7 +1,10 @@
 @Library('pipeline-library-demo')_
 import io.abc.*
 pl = new workspaceclean()
+p2 = new mvnbuild()
 node{
 	pl.cleanup()
+	p2.build('clean install')
+
 }
 
