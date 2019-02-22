@@ -1,5 +1,4 @@
 def call() {
-    pipeline {
       stages {
         stage('Initialize Workspace') {
           steps {
@@ -7,6 +6,5 @@ def call() {
 	    sh "ls -lhtr /"
           }
         }
-      }
     }
 }
