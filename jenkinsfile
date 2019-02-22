@@ -2,9 +2,11 @@
 import io.abc.*
 pl = new workspaceclean()
 p2 = new mvnbuild()
+p3 = new sonar()
 node{
 	pl.cleanup()
 	p2.build('clean install')
+	p3.sonarscan('http://35.200.171.150:9000', 'myproject', 'myproject')
 
 }
 
