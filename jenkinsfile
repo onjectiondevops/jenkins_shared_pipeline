@@ -1,5 +1,4 @@
 @Library('pipeline-library-demo')_
-import onjection.pipelines.* 
-
-def z = new Zot()
-z.checkOutFrom('https://github.com/gcamp/GCPlaceholderTextView.git')
+import io.abc.*
+pl = new pipeline()
+pl.build()
