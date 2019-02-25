@@ -1,14 +1,20 @@
 @Library('pipeline-library-demo')_
 import io.abc.*
-pl = new workspaceclean()
-p2 = new mvnbuild()
-p3 = new sonar()
-p4 = new dockerbuild()
+//pl = new cleanup()
+//p2 = new mvn_build()
+//p3 = new sonar_scan()
+//p4 = new docker_build()
+p5 = new pipeline()
+
 node{
-	pl.cleanup()
-	p2.build('clean install')
-	p3.sonarscan('http://35.200.171.150:9000', 'myproject', 'myproject')
-	p4.dockerbuild('test-build:v1')
+	//pl.cleanup()
+	//p2.mvn_build('clean install')
+	//p3.sonar_scan('http://35.200.171.150:9000', 'myproject', 'myproject')
+	//p4.docker_build('test-build:v1')
+
+   p5.Initialize_Workspace()
+   p5.build()
+	 p5.sonarScan('http://35.200.171.150:9000', 'myproject', 'myproject')
+	 p5.dockerBuild('onjectiondevops/testimage:v1')
 
 }
-
