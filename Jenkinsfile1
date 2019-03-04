@@ -19,5 +19,5 @@ node{
 	 //p5.dockerPush('onjectiondevops/testimage:v1')
    //p5.onlyMasterSteps(p5.dockerPush('onjectiondevops/testimage:v1'))
 	 //stopOtherThanMaster()
-		p5.remoteDockerDeploy('142.93.213.218','root','ssh-credentials','ls')
+		p5.remoteDockerDeploy('142.93.213.218','root','ssh-credentials','docker ps -a')
 }
