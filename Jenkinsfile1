@@ -12,13 +12,13 @@ node{
 	//p3.sonar_scan('http://35.200.171.150:9000', 'myproject', 'myproject')
 	//p4.docker_build('test-build:v1')
 
-   p5.Initialize_Workspace()
-	 p5.checkOutScm('https://github.com/onjectiondevops/jenkins_shared_pipeline.git', 'master', 'b80af9e6-01c6-4772-82de-2009da2d7608')
+   //p5.Initialize_Workspace()
+	 p5.checkOutScm('https://github.com/onjectiondevops/jenkins_shared_pipeline.git', 'master', 'github-cred')
    //p5.MvnBuild('clean install')
 	 //p5.sonarScan('http://35.200.171.150:9000', 'myproject', 'myproject')
 	 //p5.dockerBuild('onjectiondevops/testimage:v1')
 	 //p5.dockerPush('onjectiondevops/testimage:v1')
    //p5.onlyMasterSteps(p5.dockerPush('onjectiondevops/testimage:v1'))
 	 //stopOtherThanMaster()
-		p5.remoteDockerDeploy('142.93.213.218','root','ssh-credentials','docker ps')
+		//p5.remoteDockerDeploy('142.93.213.218','root','ssh-credentials','docker ps')
 }

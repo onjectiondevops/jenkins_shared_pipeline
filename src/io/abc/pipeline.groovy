@@ -53,7 +53,7 @@ def remoteDockerDeploy(IP, USERNAME, ssh_credentials_id, COMMAND){
 }
 
 def checkOutScm(REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
-  checkout([$class: 'GitSCM', branches: [[name: CREDENTIALID]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
+  checkout([$class: 'GitSCM', branches: [[name: BRANCHNAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
 }
 
 
