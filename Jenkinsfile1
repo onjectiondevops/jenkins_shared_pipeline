@@ -13,6 +13,7 @@ node{
 	//p4.docker_build('test-build:v1')
 
    p5.Initialize_Workspace()
+	 p5.checkOutScm('', 'master', '')
    //p5.MvnBuild('clean install')
 	 //p5.sonarScan('http://35.200.171.150:9000', 'myproject', 'myproject')
 	 //p5.dockerBuild('onjectiondevops/testimage:v1')

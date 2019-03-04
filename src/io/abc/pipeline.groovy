@@ -49,9 +49,11 @@ def remoteDockerDeploy(IP, USERNAME, ssh_credentials_id, COMMAND){
       remote.password = PASS
       remote.allowAnyHosts = true
       sshCommand remote: remote, command: "${COMMAND}"
+    }
 }
 
-
+def checkOutScm(REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
+  checkout([$class: 'GitSCM', branches: [[name: CREDENTIALID]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
 }
 
 
