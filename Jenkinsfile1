@@ -13,8 +13,11 @@ node{
 	//p4.docker_build('test-build:v1')
 
    p5.Initialize_Workspace()
-   //p5.build('clean install')
+   //p5.MvnBuild('clean install')
 	 //p5.sonarScan('http://35.200.171.150:9000', 'myproject', 'myproject')
 	 //p5.dockerBuild('onjectiondevops/testimage:v1')
-    p5.onlymaster(p5.hello())   //
+	 //p5.dockerPush('onjectiondevops/testimage:v1')
+   //p5.onlyMasterSteps(p5.dockerPush('onjectiondevops/testimage:v1'))
+	 //stopOtherThanMaster()
+		p5.remoteDockerDeploy('142.93.213.218','root','ssh-credentials','ls')
 }

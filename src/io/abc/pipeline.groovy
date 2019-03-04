@@ -5,31 +5,53 @@ def Initialize_Workspace() {
   deleteDir()
 }
 
-def build(name) {
+def MvnBuild(name) {
   def scannerHome = tool 'mvn'
   sh "${scannerHome}/bin/mvn ${name}"
 }
 
 def sonarScan(server, projectname, projectkey) {
   	def SonarQubescannerHome = tool 'sonarqube-scanner'
-	sh "${SonarQubescannerHome}/bin/sonar-scanner -Dsonar.host.url=${server} -Dsonar.projectKey=${projectname} -Dsonar.projectName=${projectkey} -Dsonar.sources=. -Dsonar.projectVersion=1.0"
+	  sh "${SonarQubescannerHome}/bin/sonar-scanner -Dsonar.host.url=${server} -Dsonar.projectKey=${projectname} -Dsonar.projectName=${projectkey} -Dsonar.sources=. -Dsonar.projectVersion=1.0"
 
 }
 
-def dockerBuild(name) {
-	app = docker.build("${name}")
+def dockerBuild(imagename, tag) {
+	sh "docker build -t ${imagename}:${tag}"
 }
 
-def onlymaster(steps) {
+def dockerPush(imagename, tag){
+  sh "docker push ${imagename}:${tag}"
+
+}
+
+def onlyMasterSteps(stepsToRun) {
   if (env.BRANCH_NAME != 'master') {
         echo "skipping onlyOnMaster steps for branch '${env.BRANCH_NAME}'"
-        echo 'hello world 2'
-        steps
+        stepsToRun
     }
 }
 
-def hello() {
-echo "hello world 3"
+def stopOtherThanMaster(stepsToRun) {
+  if (env.BRANCH_NAME != 'master') {
+        echo "Pipeline is not executing from Master branch. Stopping the pipeline."
+        return
+    }
+}
+
+
+def remoteDockerDeploy(IP, USERNAME, ssh_credentials_id, COMMAND){
+    withCredentials([string(credentialsId: ssh_credentials_id, variable: 'PASS')]) {
+      def remote = [:]
+      remote.name = "test"
+      remote.host = "${IP}"
+      remote.user = "${USERNAME}"
+      remote.password = PASS
+      remote.allowAnyHosts = true
+      sshCommand remote: remote, command: "${COMMAND}"
+}
+
+
 }
 
 
