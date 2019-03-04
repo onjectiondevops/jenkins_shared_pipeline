@@ -16,5 +16,5 @@ node{
    //p5.build('clean install')
 	 //p5.sonarScan('http://35.200.171.150:9000', 'myproject', 'myproject')
 	 //p5.dockerBuild('onjectiondevops/testimage:v1')
-   p5.onlymaster()   //
+   p5.onlymaster(p5.Initialize_Workspace())   //
 }
