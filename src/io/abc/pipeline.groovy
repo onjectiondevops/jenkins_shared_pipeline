@@ -20,10 +20,11 @@ def dockerBuild(name) {
 	app = docker.build("${name}")
 }
 
-def onlymaster() {
+def onlymaster(steps) {
   if (env.BRANCH_NAME != 'master') {
         echo "skipping onlyOnMaster steps for branch '${env.BRANCH_NAME}'"
         echo 'hello world 2'
+        steps
     }
 }
 
