@@ -28,4 +28,9 @@ def onlymaster(steps) {
     }
 }
 
+def hello() {
+echo "hello world 3"
+}
+
+
 return this
