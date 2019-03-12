@@ -16,12 +16,12 @@ def sonarScan(server, projectname, projectkey) {
 
 }
 
-def dockerBuild(imagename, tag) {
-	sh "docker build -t ${imagename}:${tag}"
+def dockerBuild(imagename) {
+	sh "docker build -t ${imagename}"
 }
 
-def dockerPush(imagename, tag){
-  sh "docker push ${imagename}:${tag}"
+def dockerPush(imagename){
+  sh "docker push ${imagename}"
 
 }
 
