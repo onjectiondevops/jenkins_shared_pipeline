@@ -7,6 +7,7 @@ def Initialize_Workspace() {
 
 def checkOutScm(REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
   checkout([$class: 'GitSCM', branches: [[name: BRANCHNAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
+  gitBranch = BRANCHNAME
 }
 
 def checkOutScmAuto(){
