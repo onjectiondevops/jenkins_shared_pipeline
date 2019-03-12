@@ -43,7 +43,7 @@ def onlyMasterSteps(stepsToRun) {
     }
 }
 
-def stopOtherThanMaster(stepsToRun) {
+def stopOtherThanMaster() {
   if (gitBranch != 'master') {
         echo "Pipeline is not executing from Master branch. Stopping the pipeline."
         return
