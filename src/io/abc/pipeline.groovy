@@ -26,12 +26,11 @@ def dockerBuild(imagename) {
 
 def dockerPush(imagename){
   sh "docker push ${imagename}"
-
 }
 
-def dockerLogin(HUBCREDENTIALID, REGISTRY){
+def dockerLoginandPush(HUBCREDENTIALID, REGISTRY, IMAGENAME){
     withDockerRegistry(credentialsId: HUBCREDENTIALID, url: "${REGISTRY}") {
-    echo "Logged in"
+        sh "docker push ${IMAGENAME}"
     }
 }
 
