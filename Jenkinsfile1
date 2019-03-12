@@ -1,24 +1,18 @@
 @Library('pipeline-library-demo')_
 import io.abc.*
-//pl = new cleanup()
-//p2 = new mvn_build()
-//p3 = new sonar_scan()
-//p4 = new docker_build()
-p5 = new pipeline()
+x1 = new pipeline()
 
 node{
-	//pl.cleanup()
-	//p2.mvn_build('clean install')
-	//p3.sonar_scan('http://35.200.171.150:9000', 'myproject', 'myproject')
-	//p4.docker_build('test-build:v1')
 
-   //p5.Initialize_Workspace()
-	 p5.checkOutScm('https://github.com/onjectiondevops/jenkins_shared_pipeline.git', 'master', 'github-cred')
-   //p5.MvnBuild('clean install')
-	 //p5.sonarScan('http://35.200.171.150:9000', 'myproject', 'myproject')
-	 //p5.dockerBuild('onjectiondevops/testimage:v1')
-	 //p5.dockerPush('onjectiondevops/testimage:v1')
-   //p5.onlyMasterSteps(p5.dockerPush('onjectiondevops/testimage:v1'))
-	 //stopOtherThanMaster()
-		p5.remoteDockerDeploy('142.93.213.218','root','ssh-credentials','docker ps')
+   x1.Initialize_Workspace()
+	 x1.checkOutScm('https://github.com/onjectiondevops/jenkins_shared_pipeline.git', 'master', 'github-cred')
+   x1.MvnBuild('clean install')
+	 x1.sonarScan('http://35.200.171.150:9000', 'myproject', 'myproject')
+	 x1.dockerBuild('onjectiondevops/testimage:v1')
+	 x1.dockerPush('onjectiondevops/testimage:v1')
+   x1.onlyMasterSteps(p5.dockerPush('onjectiondevops/testimage:v1'))
+	 x1.stopOtherThanMaster()
+	 x1.remoteDockerDeploy('142.93.213.218','root','ssh-credentials','docker ps')
+	 x1.kubernetesDeployment('show-leapord', 'https://my-kubernetes-cluster', '<crednetial-id>','kubectl get pods --all-namespaces')
+
 }
