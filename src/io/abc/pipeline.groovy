@@ -29,10 +29,6 @@ def dockerBuild(imagename) {
 	sh "docker build -t ${imagename} ."
 }
 
-def dockerPush(imagename){
-  sh "docker push ${imagename}"
-}
-
 def dockerLoginandPush(HUBCREDENTIALID, REGISTRY, IMAGENAME){
     withDockerRegistry(credentialsId: HUBCREDENTIALID, url: "${REGISTRY}") {
         sh "docker push ${IMAGENAME}"
@@ -41,6 +37,7 @@ def dockerLoginandPush(HUBCREDENTIALID, REGISTRY, IMAGENAME){
 
 def onlyMasterSteps(stepsToRun) {
   if (gitBranch == 'master') {
+        echo "Current branch name is: ${gitBranch}"
         stepsToRun
     }
 }
