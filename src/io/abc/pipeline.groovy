@@ -34,7 +34,7 @@ def dockerLoginandPush(HUBCREDENTIALID, REGISTRY, IMAGENAME){
     }
 }
 
-def onlyMasterSteps(stepsToRun) {
+def onlyMasterSteps(branch, stepsToRun) {
   if (branch == 'master') {
         stepsToRun
     }
