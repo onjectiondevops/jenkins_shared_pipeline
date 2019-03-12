@@ -43,7 +43,7 @@ def kubernetesDeployment(CLUSTERNAME, APIENDPOINT, KUBERNETESCREDENTIALID, KUBER
  withKubeConfig(caCertificate: '', clusterName: "${CLUSTERNAME}", contextName: '', credentialsId: "${KUBERNETESCREDENTIALID}", namespace: '', serverUrl: "${APIENDPOINT}") {
     sh 'kubectl get pods --insecure-skip-tls-verify=true --all-namespaces'
     sh 'rm -rf ~/.helm && helm init --client-only'
-    sh """ ${KUBERNETESCOMMANDS} """ 
+    sh """ ${KUBERNETESCOMMANDS} """
   }
 }
 
@@ -63,9 +63,9 @@ def checkOutScm(REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
   checkout([$class: 'GitSCM', branches: [[name: BRANCHNAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
 }
 
-def blackDuckScan(BLACKDUCKSEVERURL, USERNAME, ) {
-hub-detect --blackduck.hub.url=BLACKDUCKSEVERURL --blackduck.hub.username=username --blackduck.hub.password=******* --blackduck.hub.trust.cert=true
-}
+#def blackDuckScan(BLACKDUCKSEVERURL, USERNAME, ) {
+#hub-detect --blackduck.hub.url=BLACKDUCKSEVERURL --blackduck.hub.username=username --blackduck.hub.password=******* --blackduck.hub.trust.cert=true
+#}
 
 
 return this
