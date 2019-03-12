@@ -9,6 +9,11 @@ def checkOutScm(REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
   checkout([$class: 'GitSCM', branches: [[name: BRANCHNAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
 }
 
+def checkOutScmAuto(){
+      gitrepo = checkout scm
+      gitBranch = gitrepo.GIT_BRANCH
+}
+
 def MvnBuild(name) {
   def scannerHome = tool 'mvn'
   sh "${scannerHome}/bin/mvn ${name}"
