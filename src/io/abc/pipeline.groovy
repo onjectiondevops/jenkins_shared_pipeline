@@ -17,7 +17,7 @@ def sonarScan(server, projectname, projectkey) {
 }
 
 def dockerBuild(imagename) {
-	sh "docker build -t ${imagename}"
+	sh "docker build -t ${imagename} ."
 }
 
 def dockerPush(imagename){
