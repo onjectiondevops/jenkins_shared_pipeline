@@ -5,9 +5,9 @@ def Initialize_Workspace() {
   deleteDir()
 }
 
-def MvnBuild(name) {
+def MvnBuild(name, dirname) {
   def scannerHome = tool 'mvn'
-  sh "${scannerHome}/bin/mvn ${name}"
+  sh "cd ${dirname} && ${scannerHome}/bin/mvn ${name}"
 }
 
 def sonarScan(server, projectname, projectkey) {
