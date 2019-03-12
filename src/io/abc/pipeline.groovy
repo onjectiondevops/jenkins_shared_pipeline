@@ -64,7 +64,6 @@ def remoteDockerDeploy(IP, USERNAME, ssh_credentials_id, COMMAND){
 
 def kubernetesDeployment(CLUSTERNAME, APIENDPOINT, KUBERNETESCREDENTIALID, KUBERNETESCOMMANDS){
  withKubeConfig(caCertificate: '', clusterName: "${CLUSTERNAME}", contextName: '', credentialsId: "${KUBERNETESCREDENTIALID}", namespace: '', serverUrl: "${APIENDPOINT}") {
-    sh 'kubectl get pods --insecure-skip-tls-verify=true --all-namespaces'
     sh 'rm -rf ~/.helm && helm init --client-only'
     sh """ ${KUBERNETESCOMMANDS} """
   }
