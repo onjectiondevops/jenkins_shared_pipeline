@@ -29,6 +29,12 @@ def dockerPush(imagename){
 
 }
 
+def dockerLogin(HUBCREDENTIALID, REGISTRY){
+    withDockerRegistry(credentialsId: ${HUBCREDENTIALID}, url: "${REGISTRY}") {
+    echo "Logged in"
+    }
+}
+
 def onlyMasterSteps(stepsToRun) {
   if (env.BRANCH_NAME != 'master') {
         echo "skipping onlyOnMaster steps for branch '${env.BRANCH_NAME}'"
