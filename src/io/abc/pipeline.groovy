@@ -63,9 +63,9 @@ def checkOutScm(REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
   checkout([$class: 'GitSCM', branches: [[name: BRANCHNAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
 }
 
-#def blackDuckScan(BLACKDUCKSEVERURL, USERNAME, ) {
-#hub-detect --blackduck.hub.url=BLACKDUCKSEVERURL --blackduck.hub.username=username --blackduck.hub.password=******* --blackduck.hub.trust.cert=true
-#}
+//def blackDuckScan(BLACKDUCKSEVERURL, USERNAME, ) {
+//hub-detect --blackduck.hub.url=BLACKDUCKSEVERURL --blackduck.hub.username=username --blackduck.hub.password=******* --blackduck.hub.trust.cert=true
+//}
 
 
 return this
