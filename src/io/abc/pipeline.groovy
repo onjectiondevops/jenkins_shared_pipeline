@@ -35,14 +35,13 @@ def dockerLoginandPush(HUBCREDENTIALID, REGISTRY, IMAGENAME){
 }
 
 def onlyMasterSteps(stepsToRun) {
-  if (env.BRANCH_NAME != 'master') {
-        echo "skipping onlyOnMaster steps for branch '${env.BRANCH_NAME}'"
+  if (branch == 'master') {
         stepsToRun
     }
 }
 
-def stopOtherThanMaster(stepsToRun) {
-  if (env.BRANCH_NAME != 'master') {
+def stopOtherThanMaster(branch, stepsToRun) {
+  if (branch != 'master') {
         echo "Pipeline is not executing from Master branch. Stopping the pipeline."
         return
     }
