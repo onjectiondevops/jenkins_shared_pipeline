@@ -30,7 +30,7 @@ def dockerPush(imagename){
 }
 
 def dockerLogin(HUBCREDENTIALID, REGISTRY){
-    withDockerRegistry(credentialsId: ${HUBCREDENTIALID}, url: "${REGISTRY}") {
+    withDockerRegistry(credentialsId: HUBCREDENTIALID, url: "${REGISTRY}") {
     echo "Logged in"
     }
 }
