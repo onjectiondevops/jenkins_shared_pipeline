@@ -2,6 +2,9 @@
 package io.abc;
 
 def Initialize_Workspace() {
+  wrap([$class: 'BuildUser']) {
+  echo "BUILD_USER that started this Pipeline: ${BUILD_USER}"
+  }
   deleteDir()
 }
 
