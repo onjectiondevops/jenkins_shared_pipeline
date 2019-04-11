@@ -52,22 +52,18 @@ def dockerLoginandPush(STAGENAME, HUBCREDENTIALID, REGISTRY, IMAGENAME){
   }
 }
 
-def onlyMasterSteps(STAGENAME, stepsToRun) {
-   stage(STAGENAME){
+def onlyMasterSteps(stepsToRun) {
       if (gitBranch == 'master') {
             echo "Current branch name is: ${gitBranch}"
             stepsToRun
         }
-   }
 }
 
-def stopOtherThanMaster(STAGENAME) {
-  stage(STAGENAME){
+def stopOtherThanMaster() {
       if (gitBranch != 'master') {
             error "Pipeline is not executing from Master branch. Stopping the pipeline."
             return
         }
-  }
 }
 
 def remoteDockerDeploy(STAGENAME, IP, USERNAME, ssh_credentials_id, COMMAND){
