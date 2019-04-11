@@ -61,6 +61,7 @@ def onlyMasterSteps(stepsToRun) {
 
 def stopOtherThanMaster() {
       if (gitBranch != 'master') {
+            echo "Current branch name is: " + gitBranch
             error "Pipeline is not executing from Master branch. Stopping the pipeline."
             return
         }
