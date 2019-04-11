@@ -53,14 +53,14 @@ def dockerLoginandPush(STAGENAME, HUBCREDENTIALID, REGISTRY, IMAGENAME){
 }
 
 def onlyMasterSteps(stepsToRun) {
-      if (gitBranch == 'master') {
+      if (gitBranch == 'origin/master') {
             echo "Current branch name is: ${gitBranch}"
             stepsToRun
         }
 }
 
 def stopOtherThanMaster() {
-      if (gitBranch != 'master') {
+      if (gitBranch != 'origin/master') {
             echo "Current branch name is: " + gitBranch
             error "Pipeline is not executing from Master branch. Stopping the pipeline."
             return
