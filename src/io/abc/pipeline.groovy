@@ -10,14 +10,18 @@ def Initialize_Workspace(STAGENAME) {
   }
 }
 
-def checkOutScm(REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
-  checkout([$class: 'GitSCM', branches: [[name: BRANCHNAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
-  gitBranch = BRANCHNAME
+def checkOutScm(STAGENAME, REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
+   stage(STAGENAME){
+      checkout([$class: 'GitSCM', branches: [[name: BRANCHNAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
+      gitBranch = BRANCHNAME
+   }
 }
 
-def checkOutScmAuto(){
-      gitrepo = checkout scm
-      gitBranch = gitrepo.GIT_BRANCH
+def checkOutScmAuto(STAGENAME){
+   stage(STAGENAME){
+        gitrepo = checkout scm
+        gitBranch = gitrepo.GIT_BRANCH
+   }
 }
 
 def MvnBuild(name) {
