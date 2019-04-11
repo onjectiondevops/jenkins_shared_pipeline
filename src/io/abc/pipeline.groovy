@@ -99,7 +99,7 @@ def kubernetesDeployment(STAGENAME, CLUSTERNAME, APIENDPOINT, KUBERNETESCREDENTI
 //   }
 //}
 
-def setEnvironmentSTAGENAME, (DOCKERIMAGENAME, BUILDSTEPSTORUN){
+def setEnvironment(STAGENAME, DOCKERIMAGENAME, BUILDSTEPSTORUN){
   stage(STAGENAME){
       docker.image(DOCKERIMAGENAME).inside {
           sh """ ${BUILDSTEPSTORUN} """
