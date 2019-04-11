@@ -76,5 +76,13 @@ def kubernetesDeployment(CLUSTERNAME, APIENDPOINT, KUBERNETESCREDENTIALID, KUBER
 //hub-detect --blackduck.hub.url=BLACKDUCKSEVERURL --blackduck.hub.username=username --blackduck.hub.password=******* --blackduck.hub.trust.cert=true
 //}
 
+def setEnvironment(DOCKERIMAGENAME, BUILDSTEPSTORUN){
+    docker.image(DOCKERIMAGENAME).inside {
+        sh """ ${BUILDSTEPSTORUN} """
+    }
+
+}
+
+
 
 return this
