@@ -1,11 +1,13 @@
 #!/usr/bin/groovy
 package io.abc;
 
-def Initialize_Workspace() {
-  wrap([$class: 'BuildUser']) {
-  echo "BUILD_USER that started this Pipeline: ${BUILD_USER}"
+def Initialize_Workspace(STAGENAME) {
+  stage(STAGENAME){
+      wrap([$class: 'BuildUser']) {
+      echo "BUILD_USER that started this Pipeline: ${BUILD_USER}"
+      }
+      deleteDir()
   }
-  deleteDir()
 }
 
 def checkOutScm(REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
