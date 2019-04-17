@@ -118,4 +118,10 @@ def twistLockPublish(STAGENAME, IMAGENAME){
     }
 }
 
+def jmeterPublish(STAGENAME, JMETERFILENAME) {
+  stage(STAGENAME){
+    performanceReport parsers: [[$class: 'JMeterParser', glob: JMETERFILENAME]], relativeFailedThresholdNegative: 1.2, relativeFailedThresholdPositive: 1.89, relativeUnstableThresholdNegative: 1.8, relativeUnstableThresholdPositive: 1.5, sourceDataFiles: JMETERFILENAME
+  }
+}
+
 return this
