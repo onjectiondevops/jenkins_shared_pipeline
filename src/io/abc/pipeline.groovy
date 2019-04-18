@@ -134,9 +134,13 @@ def mvnStyleBuild(STAGENAME, DIRNAME, ARGUMENTS) {
 def artifactArchive(STAGENAME, PATHOFARTIFACT){
   stage(STAGENAME){
     archiveArtifacts artifacts: PATHOFARTIFACT, fingerprint: true
-
   }
 }
 
+def junitPublish(STAGENAME, PATHOFARTIFACT){
+  stage(STAGENAME){
+     junit PATHOFARTIFACT
+  }
+}
 
 return this
