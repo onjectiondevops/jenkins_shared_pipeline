@@ -124,4 +124,12 @@ def jmeterPublish(STAGENAME, JMETERFILENAME) {
   }
 }
 
+def mvnStyleBuild(STAGENAME, DIRNAME, ARGUMENTS) {
+  stage(STAGENAME){
+     def scannerHome = tool 'mvn'
+     sh "cd ${DIRNAME} && ${scannerHome}/bin/mvn ${ARGUMENTS}"
+  }
+}
+
+
 return this
