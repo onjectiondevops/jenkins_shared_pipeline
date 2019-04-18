@@ -131,5 +131,12 @@ def mvnStyleBuild(STAGENAME, DIRNAME, ARGUMENTS) {
   }
 }
 
+def artifactArchive(STAGENAME, PATHOFARTIFACT){
+  stage(STAGENAME){
+    archiveArtifacts artifacts: PATHOFARTIFACT, fingerprint: true
+
+  }
+}
+
 
 return this
