@@ -146,7 +146,7 @@ def junitPublish(STAGENAME, PATHOFARTIFACT){
 def seleniumTest(STAGENAME, SELENIUM_NODE_IMAGE, RUN_TIME_ARGUMENTS, COMMANDS_TO_RUN){
 stage(STAGENAME){
       docker.image(SELENIUM_NODE_IMAGE).withRun(RUN_TIME_ARGUMENTS) { c ->
-          sh "COMMANDS_TO_RUN"
+          sh """ ${COMMANDS_TO_RUN} """
      }
    }
 }
