@@ -141,25 +141,10 @@ def RemoteDockerDeploy(STAGENAME, IP, USERNAME, ssh_credentials_id, COMMAND){
 def KubernetesDeployment(STAGENAME, CLUSTERNAME, APIENDPOINT, KUBERNETESCREDENTIALID, KUBERNETESCOMMANDS){
   stage(STAGENAME){
      withKubeConfig(caCertificate: '', clusterName: "${CLUSTERNAME}", contextName: '', credentialsId: "${KUBERNETESCREDENTIALID}", namespace: '', serverUrl: "${APIENDPOINT}") {
-        //sh 'rm -rf ~/.helm && helm init --client-only'
         sh """ ${KUBERNETESCOMMANDS} """
       }
   }
 }
-
-//def blackDuckScan(STAGENAME, BLACKDUCKSEVERURL, USERNAME, ) {
-//   stage(STAGENAME){
-//      hub-detect --blackduck.hub.url=BLACKDUCKSEVERURL --blackduck.hub.username=username --blackduck.hub.password=******* --blackduck.hub.trust.cert=true
-//   }
-//}
-
-//def seleniumTestInsideContainer(STAGENAME, SELENIUM_NODE_IMAGE, RUN_TIME_ARGUMENTS, COMMANDS_TO_RUN){
-//stage(STAGENAME){
-//      docker.image(SELENIUM_NODE_IMAGE).withRun(RUN_TIME_ARGUMENTS) { c ->
-//          sh """ ${COMMANDS_TO_RUN} """
-//     }
-//   }
-//}
 
 
 return this
