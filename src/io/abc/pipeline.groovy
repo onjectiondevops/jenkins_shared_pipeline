@@ -44,7 +44,7 @@ def SetEnvironment(STAGE_NAME, DOCKER_IMAGE_NAME, STEPS_TO_RUN){
 }
 
 // Code Testing
-def JmeterPublish(STAGE_NAME, JMETER_FILE_NAME) {
+def JmeterTest(STAGE_NAME, JMETER_FILE_NAME) {
   stage(STAGE_NAME){
     performanceReport parsers: [[$class: 'JMeterParser', glob: JMETER_FILE_NAME]], relativeFailedThresholdNegative: 1.2, relativeFailedThresholdPositive: 1.89, relativeUnstableThresholdNegative: 1.8, relativeUnstableThresholdPositive: 1.5, sourceDataFiles: JMETER_FILE_NAME
   }
