@@ -95,8 +95,6 @@ def DockerPush(STAGENAME, HUBCREDENTIALID, REGISTRY, IMAGENAME){
 // Post scan
 def TwistLockScan(STAGENAME, IMAGENAME){
   stage(STAGENAME) {
-  //twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: true, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: false, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 50
-  //twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: false, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: false, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 10
   twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: false, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: true, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 10
   }
 }
