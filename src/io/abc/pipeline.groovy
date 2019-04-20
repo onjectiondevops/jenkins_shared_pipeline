@@ -1,6 +1,7 @@
 #!/usr/bin/groovy
 package io.abc;
 
+// Cleanup Stages
 def Initialize_Workspace(STAGENAME) {
   stage(STAGENAME){
       wrap([$class: 'BuildUser']) {
@@ -10,6 +11,7 @@ def Initialize_Workspace(STAGENAME) {
   }
 }
 
+// Checkout Functions
 def checkOutScm(STAGENAME, REPOSITORYNAME, BRANCHNAME, CREDENTIALID){
    stage(STAGENAME){
       checkout([$class: 'GitSCM', branches: [[name: BRANCHNAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIALID, url: REPOSITORYNAME]]])
@@ -24,13 +26,7 @@ def checkOutScmAuto(STAGENAME){
    }
 }
 
-def MvnBuild(STAGENAME, name) {
-   stage(STAGENAME){
-      def scannerHome = tool 'mvn'
-      sh "${scannerHome}/bin/mvn ${name}"
-   }
-}
-
+// Code Scanning Stages
 def sonarScan(STAGENAME, server, projectname, projectkey) {
    stage(STAGENAME){
   	  def SonarQubescannerHome = tool 'sonarqube-scanner'
@@ -38,6 +34,50 @@ def sonarScan(STAGENAME, server, projectname, projectkey) {
    }
 }
 
+//Code Build
+def setEnvironment(STAGENAME, DOCKERIMAGENAME, BUILDSTEPSTORUN){
+  stage(STAGENAME){
+      docker.image(DOCKERIMAGENAME).inside {
+          sh """ ${BUILDSTEPSTORUN} """
+      }
+  }
+}
+
+// Code Testing
+def jmeterPublish(STAGENAME, JMETERFILENAME) {
+  stage(STAGENAME){
+    performanceReport parsers: [[$class: 'JMeterParser', glob: JMETERFILENAME]], relativeFailedThresholdNegative: 1.2, relativeFailedThresholdPositive: 1.89, relativeUnstableThresholdNegative: 1.8, relativeUnstableThresholdPositive: 1.5, sourceDataFiles: JMETERFILENAME
+  }
+}
+
+def mvnStyleBuild(STAGENAME, DIRNAME, ARGUMENTS) {
+  stage(STAGENAME){
+     def scannerHome = tool 'mvn'
+     sh "cd ${DIRNAME} && ${scannerHome}/bin/mvn ${ARGUMENTS}"
+  }
+}
+
+def artifactArchive(STAGENAME, PATHOFARTIFACT){
+  stage(STAGENAME){
+    archiveArtifacts artifacts: PATHOFARTIFACT, fingerprint: true
+  }
+}
+
+def junitPublish(STAGENAME, PATHOFARTIFACT){
+  stage(STAGENAME){
+     junit PATHOFARTIFACT
+  }
+}
+
+def seleniumTest(STAGENAME, COMMANDS_TO_RUN){
+stage(STAGENAME){
+  wrap([$class: 'Xvfb']) {
+    sh """ ${COMMANDS_TO_RUN} """
+    }
+ }
+}
+
+// Docker Build Stages
 def dockerBuild(STAGENAME, imagename) {
   stage(STAGENAME){
 	    sh "docker build -t ${imagename} ."
@@ -52,6 +92,22 @@ def dockerLoginandPush(STAGENAME, HUBCREDENTIALID, REGISTRY, IMAGENAME){
   }
 }
 
+// Post scan
+def twistLockScan(STAGENAME, IMAGENAME){
+  stage(STAGENAME) {
+  //twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: true, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: false, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 50
+  //twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: false, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: false, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 10
+  twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: false, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: true, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 10
+  }
+}
+
+def twistLockPublish(STAGENAME, IMAGENAME){
+    stage(STAGENAME){
+    twistlockPublish ca: '', cert: '', containerized: true, dockerAddress: 'unix:///var/run/docker.sock', image: IMAGENAME, key: '', logLevel: 'true', timeout: 50
+    }
+}
+
+// Conditional Stages
 def onlyMasterSteps(stepsToRun) {
       if (gitBranch == 'origin/master') {
             echo "Current branch name is: ${gitBranch}"
@@ -67,6 +123,7 @@ def stopOtherThanMaster() {
         }
 }
 
+// Deployment Stages
 def remoteDockerDeploy(STAGENAME, IP, USERNAME, ssh_credentials_id, COMMAND){
    stage(STAGENAME){
         withCredentials([string(credentialsId: ssh_credentials_id, variable: 'PASS')]) {
@@ -96,67 +153,13 @@ def kubernetesDeployment(STAGENAME, CLUSTERNAME, APIENDPOINT, KUBERNETESCREDENTI
 //   }
 //}
 
-def setEnvironment(STAGENAME, DOCKERIMAGENAME, BUILDSTEPSTORUN){
-  stage(STAGENAME){
-      docker.image(DOCKERIMAGENAME).inside {
-          sh """ ${BUILDSTEPSTORUN} """
-      }
-  }
-}
+//def seleniumTestInsideContainer(STAGENAME, SELENIUM_NODE_IMAGE, RUN_TIME_ARGUMENTS, COMMANDS_TO_RUN){
+//stage(STAGENAME){
+//      docker.image(SELENIUM_NODE_IMAGE).withRun(RUN_TIME_ARGUMENTS) { c ->
+//          sh """ ${COMMANDS_TO_RUN} """
+//     }
+//   }
+//}
 
-def twistLockScan(STAGENAME, IMAGENAME){
-  stage(STAGENAME) {
-  //twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: true, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: false, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 50
-  //twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: false, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: false, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 10
-  twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: false, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: true, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 10
-  }
-}
-
-def twistLockPublish(STAGENAME, IMAGENAME){
-    stage(STAGENAME){
-    twistlockPublish ca: '', cert: '', containerized: true, dockerAddress: 'unix:///var/run/docker.sock', image: IMAGENAME, key: '', logLevel: 'true', timeout: 50
-    }
-}
-
-def jmeterPublish(STAGENAME, JMETERFILENAME) {
-  stage(STAGENAME){
-    performanceReport parsers: [[$class: 'JMeterParser', glob: JMETERFILENAME]], relativeFailedThresholdNegative: 1.2, relativeFailedThresholdPositive: 1.89, relativeUnstableThresholdNegative: 1.8, relativeUnstableThresholdPositive: 1.5, sourceDataFiles: JMETERFILENAME
-  }
-}
-
-def mvnStyleBuild(STAGENAME, DIRNAME, ARGUMENTS) {
-  stage(STAGENAME){
-     def scannerHome = tool 'mvn'
-     sh "cd ${DIRNAME} && ${scannerHome}/bin/mvn ${ARGUMENTS}"
-  }
-}
-
-def artifactArchive(STAGENAME, PATHOFARTIFACT){
-  stage(STAGENAME){
-    archiveArtifacts artifacts: PATHOFARTIFACT, fingerprint: true
-  }
-}
-
-def junitPublish(STAGENAME, PATHOFARTIFACT){
-  stage(STAGENAME){
-     junit PATHOFARTIFACT
-  }
-}
-
-def seleniumTestInsideContainer(STAGENAME, SELENIUM_NODE_IMAGE, RUN_TIME_ARGUMENTS, COMMANDS_TO_RUN){
-stage(STAGENAME){
-      docker.image(SELENIUM_NODE_IMAGE).withRun(RUN_TIME_ARGUMENTS) { c ->
-          sh """ ${COMMANDS_TO_RUN} """
-     }
-   }
-}
-
-def seleniumTest(STAGENAME, COMMANDS_TO_RUN){
-stage(STAGENAME){
-  wrap([$class: 'Xvfb']) {
-    sh """ ${COMMANDS_TO_RUN} """
-    }
- }
-}
 
 return this
