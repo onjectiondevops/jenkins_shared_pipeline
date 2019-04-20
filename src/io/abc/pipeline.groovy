@@ -154,7 +154,7 @@ stage(STAGENAME){
 def seleniumTest(STAGENAME, COMMANDS_TO_RUN){
 stage(STAGENAME){
   wrap([$class: 'Xvfb']) {
-    sh """ {COMMANDS_TO_RUN} """
+    sh """ ${COMMANDS_TO_RUN} """
     }
  }
 }
