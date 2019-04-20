@@ -27,45 +27,45 @@ def CheckOutScmAuto(STAGE_NAME){
 }
 
 // Code Scanning Stages
-def SonarScan(STAGE_NAME, server, projectname, projectkey) {
+def SonarScan(STAGE_NAME, SERVER, PROJECT_NAME, PROJECT_KEY) {
    stage(STAGE_NAME){
   	  def SonarQubescannerHome = tool 'sonarqube-scanner'
-	    sh "${SonarQubescannerHome}/bin/sonar-scanner -Dsonar.host.url=${server} -Dsonar.projectKey=${projectname} -Dsonar.projectName=${projectkey} -Dsonar.sources=. -Dsonar.projectVersion=1.0"
+	    sh "${SonarQubescannerHome}/bin/sonar-scanner -Dsonar.host.url=${SERVER} -Dsonar.projectKey=${PROJECT_NAME} -Dsonar.projectName=${PROJECT_KEY} -Dsonar.sources=. -Dsonar.projectVersion=1.0"
    }
 }
 
 //Code Build
-def SetEnvironment(STAGE_NAME, DOCKERIMAGENAME, BUILDSTEPSTORUN){
+def SetEnvironment(STAGE_NAME, DOCKER_IMAGE_NAME, STEPS_TO_RUN){
   stage(STAGE_NAME){
-      docker.image(DOCKERIMAGENAME).inside {
-          sh """ ${BUILDSTEPSTORUN} """
+      docker.image(DOCKER_IMAGE_NAME).inside {
+          sh """ ${STEPS_TO_RUN} """
       }
   }
 }
 
 // Code Testing
-def JmeterPublish(STAGE_NAME, JMETERFILENAME) {
+def JmeterPublish(STAGE_NAME, JMETER_FILE_NAME) {
   stage(STAGE_NAME){
-    performanceReport parsers: [[$class: 'JMeterParser', glob: JMETERFILENAME]], relativeFailedThresholdNegative: 1.2, relativeFailedThresholdPositive: 1.89, relativeUnstableThresholdNegative: 1.8, relativeUnstableThresholdPositive: 1.5, sourceDataFiles: JMETERFILENAME
+    performanceReport parsers: [[$class: 'JMeterParser', glob: JMETER_FILE_NAME]], relativeFailedThresholdNegative: 1.2, relativeFailedThresholdPositive: 1.89, relativeUnstableThresholdNegative: 1.8, relativeUnstableThresholdPositive: 1.5, sourceDataFiles: JMETER_FILE_NAME
   }
 }
 
-def MvnStyleBuild(STAGE_NAME, DIRNAME, ARGUMENTS) {
+def MvnStyleBuild(STAGE_NAME, DIR_NAME, ARGUMENTS) {
   stage(STAGE_NAME){
      def scannerHome = tool 'mvn'
-     sh "cd ${DIRNAME} && ${scannerHome}/bin/mvn ${ARGUMENTS}"
+     sh "cd ${DIR_NAME} && ${scannerHome}/bin/mvn ${ARGUMENTS}"
   }
 }
 
-def ArtifactArchive(STAGE_NAME, PATHOFARTIFACT){
+def ArtifactArchive(STAGE_NAME, PATH_OF_ARTIFACT){
   stage(STAGE_NAME){
-    archiveArtifacts artifacts: PATHOFARTIFACT, fingerprint: true
+    archiveArtifacts artifacts: PATH_OF_ARTIFACT, fingerprint: true
   }
 }
 
-def JunitPublish(STAGE_NAME, PATHOFARTIFACT){
+def JunitPublish(STAGE_NAME, PATH_OF_ARTIFACT){
   stage(STAGE_NAME){
-     junit PATHOFARTIFACT
+     junit PATH_OF_ARTIFACT
   }
 }
 
@@ -78,38 +78,38 @@ stage(STAGE_NAME){
 }
 
 // Docker Build Stages
-def DockerBuild(STAGE_NAME, imagename) {
+def DockerBuild(STAGE_NAME, IMAGE_NAME) {
   stage(STAGE_NAME){
-	    sh "docker build -t ${imagename} ."
+	    sh "docker build -t ${IMAGE_NAME} ."
   }
 }
 
-def DockerPush(STAGE_NAME, HUBCREDENTIALID, REGISTRY, IMAGENAME){
+def DockerPush(STAGE_NAME, HUB_CREDENTIAL_ID, REGISTRY, IMAGE_NAME){
   stage(STAGE_NAME){
-      withDockerRegistry(credentialsId: HUBCREDENTIALID, url: "${REGISTRY}") {
-          sh "docker push ${IMAGENAME}"
+      withDockerRegistry(credentialsId: HUB_CREDENTIAL_ID, url: "${REGISTRY}") {
+          sh "docker push ${IMAGE_NAME}"
       }
   }
 }
 
 // Post scan
-def TwistLockScan(STAGE_NAME, IMAGENAME){
+def TwistLockScan(STAGE_NAME, IMAGE_NAME){
   stage(STAGE_NAME) {
-  twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: false, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: true, image: IMAGENAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 10
+  twistlockScan ca: '', cert: '', compliancePolicy: 'warn', containerized: false, dockerAddress: 'unix:///var/run/docker.sock', gracePeriodDays: 0, ignoreImageBuildTime: true, image: IMAGE_NAME, key: '', logLevel: 'true', policy: 'warn', requirePackageUpdate: false, timeout: 10
   }
 }
 
-def TwistLockPublish(STAGE_NAME, IMAGENAME){
+def TwistLockPublish(STAGE_NAME, IMAGE_NAME){
     stage(STAGE_NAME){
-    twistlockPublish ca: '', cert: '', containerized: true, dockerAddress: 'unix:///var/run/docker.sock', image: IMAGENAME, key: '', logLevel: 'true', timeout: 50
+    twistlockPublish ca: '', cert: '', containerized: true, dockerAddress: 'unix:///var/run/docker.sock', image: IMAGE_NAME, key: '', logLevel: 'true', timeout: 50
     }
 }
 
 // Conditional Stages
-def OnlyMasterSteps(stepsToRun) {
+def OnlyMasterSteps(STEPS_TO_RUN) {
       if (gitBranch == 'origin/master') {
             echo "Current branch name is: ${gitBranch}"
-            stepsToRun
+            STEPS_TO_RUN
         }
 }
 
@@ -122,13 +122,13 @@ def StopOtherThanMaster() {
 }
 
 // Deployment Stages
-def RemoteDockerDeploy(STAGE_NAME, IP, USERNAME, ssh_credentials_id, COMMAND){
+def RemoteDockerDeploy(STAGE_NAME, IP, USER_NAME, SSH_CREDENTIALS_ID, COMMAND){
    stage(STAGE_NAME){
-        withCredentials([string(credentialsId: ssh_credentials_id, variable: 'PASS')]) {
+        withCredentials([string(credentialsId: SSH_CREDENTIALS_ID, variable: 'PASS')]) {
           def remote = [:]
           remote.name = "test"
           remote.host = "${IP}"
-          remote.user = "${USERNAME}"
+          remote.user = "${USER_NAME}"
           remote.password = PASS
           remote.allowAnyHosts = true
           sshCommand remote: remote, command: "${COMMAND}"
@@ -136,9 +136,9 @@ def RemoteDockerDeploy(STAGE_NAME, IP, USERNAME, ssh_credentials_id, COMMAND){
     }
 }
 
-def KubernetesDeployment(STAGE_NAME, CLUSTERNAME, APIENDPOINT, KUBERNETESCREDENTIALID, KUBERNETESCOMMANDS){
+def KubernetesDeployment(STAGE_NAME, CLUSTER_NAME, API_END_POINT, KUBERNETES_CREDENTIAL_ID, KUBERNETES_COMMANDS){
   stage(STAGE_NAME){
-     withKubeConfig(caCertificate: '', clusterName: "${CLUSTERNAME}", contextName: '', credentialsId: "${KUBERNETESCREDENTIALID}", namespace: '', serverUrl: "${APIENDPOINT}") {
+     withKubeConfig(caCertificate: '', clusterName: "${CLUSTER_NAME}", contextName: '', credentialsId: "${KUBERNETES_CREDENTIAL_ID}", namespace: '', serverUrl: "${API_END_POINT}") {
         sh """ ${KUBERNETESCOMMANDS} """
       }
   }
