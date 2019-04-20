@@ -141,7 +141,7 @@ def RemoteDockerDeploy(STAGENAME, IP, USERNAME, ssh_credentials_id, COMMAND){
 def KubernetesDeployment(STAGENAME, CLUSTERNAME, APIENDPOINT, KUBERNETESCREDENTIALID, KUBERNETESCOMMANDS){
   stage(STAGENAME){
      withKubeConfig(caCertificate: '', clusterName: "${CLUSTERNAME}", contextName: '', credentialsId: "${KUBERNETESCREDENTIALID}", namespace: '', serverUrl: "${APIENDPOINT}") {
-        sh 'rm -rf ~/.helm && helm init --client-only'
+        //sh 'rm -rf ~/.helm && helm init --client-only'
         sh """ ${KUBERNETESCOMMANDS} """
       }
   }
