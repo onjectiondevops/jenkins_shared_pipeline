@@ -36,6 +36,7 @@ def SonarScan(STAGE_NAME, SERVER, PROJECT_NAME, PROJECT_KEY, CODE_DIR) {
 
 def SonarQualityGates(STAGE_NAME, QUALITY_GATE_BYPASS){
         stage("Check SonarQube Results"){
+            withSonarQubeEnv('sonar_server'){
               	timeout(time: 1, unit: 'HOURS') {
             			def qg = waitForQualityGate()
               			if (qg.status != 'OK') {
@@ -48,6 +49,7 @@ def SonarQualityGates(STAGE_NAME, QUALITY_GATE_BYPASS){
         				echo "Sonar Quality gates passed."
         			        }
           			}
+              }
         }
 }
 
