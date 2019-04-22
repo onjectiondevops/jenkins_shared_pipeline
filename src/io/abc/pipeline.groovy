@@ -32,7 +32,7 @@ def SonarScan(STAGE_NAME, SERVER, PROJECT_NAME, PROJECT_KEY, CODE_DIR) {
     withSonarQubeEnv('sonar_server'){
   	  def SonarQubescannerHome = tool 'sonarqube-scanner'
 	    sh "cd ${CODE_DIR} && ${SonarQubescannerHome}/bin/sonar-scanner -Dsonar.host.url=${SERVER} -Dsonar.projectKey=${PROJECT_NAME} -Dsonar.java.binaries=${SonarQubescannerHome}/bin/ -Dsonar.projectName=${PROJECT_KEY} -Dsonar.sourceEncoding=UTF-8 -Dsonar.webhooks.global.1.url=${SERVER}  -Dsonar.sources=. -Dsonar.projectVersion=1.0"
-      sleep 5
+      sleep 10
    }
   }
 }
