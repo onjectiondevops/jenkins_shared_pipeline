@@ -69,10 +69,21 @@ def JmeterPublish(STAGE_NAME, JMETER_FILE_NAME) {
   }
 }
 
-def MvnStyleBuild(STAGE_NAME, DIR_NAME, ARGUMENTS) {
+def MvnStyleBuild(STAGE_NAME, DIR_NAME, ARGUMENTS, BYPASS_ARGUMENT) {
   stage(STAGE_NAME){
      def scannerHome = tool 'mvn'
-     sh "cd ${DIR_NAME} && ${scannerHome}/bin/mvn ${ARGUMENTS}"
+     try {
+          sh "cd ${DIR_NAME} && ${scannerHome}/bin/mvn ${ARGUMENTS}"
+    }
+    catch (exc) {
+          println "Failed to test"
+          if (BYPASS_ARGUMENT == "true"){
+                echo "Skip failure"
+          }
+          else {
+                throw(exc)
+          }
+    }
   }
 }
 
