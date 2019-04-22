@@ -44,10 +44,8 @@ def SonarQualityGates(STAGE_NAME, QUALITY_GATE_BYPASS){
                           } else {
                                 error "Pipeline abort due to Quality gate failure: ${qg.status}"
                           }
-        				sonar_gate_status = "${qg.status}"
          		     		} else {
         				echo "Sonar Quality gates passed."
-        				sonar_gate_status = "${qg.status}"
         			        }
           			}
         }
