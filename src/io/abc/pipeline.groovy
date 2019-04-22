@@ -27,11 +27,10 @@ def CheckOutScmAuto(STAGE_NAME){
 }
 
 // Code Scanning Stages
-def SonarScan(STAGE_NAME, SERVER, PROJECT_NAME, PROJECT_KEY) {
+def SonarScan(STAGE_NAME, SERVER, PROJECT_NAME, PROJECT_KEY, CODE_DIR) {
    stage(STAGE_NAME){
   	  def SonarQubescannerHome = tool 'sonarqube-scanner'
-      sh "cat /var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube-scanner/conf/sonar-scanner.properties"
-	    sh "${SonarQubescannerHome}/bin/sonar-scanner -Dsonar.host.url=${SERVER} -Dsonar.projectKey=${PROJECT_NAME} -Dsonar.projectName=${PROJECT_KEY} -Dsonar.sourceEncoding=UTF-8 -Dsonar.webhooks.global.1.url=${SERVER}  -Dsonar.sources=. -Dsonar.projectVersion=1.0"
+	    sh "cd ${CODE_DIR} && ${SonarQubescannerHome}/bin/sonar-scanner -Dsonar.host.url=${SERVER} -Dsonar.projectKey=${PROJECT_NAME} -Dsonar.projectName=${PROJECT_KEY} -Dsonar.sourceEncoding=UTF-8 -Dsonar.webhooks.global.1.url=${SERVER}  -Dsonar.sources=. -Dsonar.projectVersion=1.0"
    }
 }
 
