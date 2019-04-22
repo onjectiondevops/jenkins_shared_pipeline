@@ -196,7 +196,6 @@ def KubernetesDeployment(STAGE_NAME, CLUSTER_NAME, API_END_POINT, KUBERNETES_CRE
 }
 
 // Pipeline Logs Archive
-
 def PipelineLogsArtifact(STAGE_NAME){
     stage(STAGE_NAME){
       sh "cat ${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log >> pipeline_logs.txt"
