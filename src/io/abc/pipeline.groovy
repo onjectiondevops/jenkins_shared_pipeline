@@ -34,6 +34,25 @@ def SonarScan(STAGE_NAME, SERVER, PROJECT_NAME, PROJECT_KEY) {
    }
 }
 
+def SonarQualityGates(STAGE_NAME, QUALITY_GATE_BYPASS){
+        stage("Check SonarQube Results"){
+              	timeout(time: 1, unit: 'HOURS') {
+            			def qg = waitForQualityGate()
+              			if (qg.status != 'OK') {
+                        if ( QUALITY_GATE_BYPASS == "true"){
+                  				      echo "Bypass SonarQube Quality gate failure: ${qg.status}"
+                          } else {
+                                error "Pipeline abort due to Quality gate failure: ${qg.status}"
+                          }
+        				sonar_gate_status = "${qg.status}"
+         		     		} else {
+        				echo "Sonar Quality gates passed."
+        				sonar_gate_status = "${qg.status}"
+        			        }
+          			}
+        }
+}
+
 //Code Build
 def SetEnvironment(STAGE_NAME, DOCKER_IMAGE_NAME, STEPS_TO_RUN){
   stage(STAGE_NAME){
