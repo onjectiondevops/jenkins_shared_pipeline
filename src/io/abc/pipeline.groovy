@@ -76,7 +76,8 @@ def MvnStyleBuild(STAGE_NAME, DIR_NAME, ARGUMENTS, BYPASS_ARGUMENT) {
           sh "cd ${DIR_NAME} && ${scannerHome}/bin/mvn ${ARGUMENTS}"
     }
     catch (exc) {
-          println "Failed to test"
+          echo "Failed to test"
+          echo BYPASS_ARGUMENT
           if (BYPASS_ARGUMENT == "true"){
                 echo "Skip failure"
           }
