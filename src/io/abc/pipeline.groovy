@@ -77,9 +77,8 @@ def MvnStyleBuild(STAGE_NAME, DIR_NAME, ARGUMENTS, BYPASS_ARGUMENT) {
     }
     catch (exc) {
           echo "Failed to test"
-          echo BYPASS_ARGUMENT
           if (BYPASS_ARGUMENT == "true"){
-                echo "Skip failure"
+                echo "Skip failure results"
           }
           else {
                 throw(exc)
@@ -100,11 +99,20 @@ def JunitPublish(STAGE_NAME, PATH_OF_ARTIFACT){
   }
 }
 
-def SeleniumTest(STAGE_NAME, COMMANDS_TO_RUN){
+def SeleniumTest(STAGE_NAME, COMMANDS_TO_RUN, BYPASS_ARGUMENT){
 stage(STAGE_NAME){
   wrap([$class: 'Xvfb']) {
-    sh """ ${COMMANDS_TO_RUN} """
-    }
+      try{
+            sh """ ${COMMANDS_TO_RUN} """
+      } catch (exc) {
+          if (BYPASS_ARGUMENT == "true"){
+                echo "Skip Selenium Test result failure"
+          }
+          else {
+                throw(exc)
+          }
+      }
+  }
  }
 }
 
