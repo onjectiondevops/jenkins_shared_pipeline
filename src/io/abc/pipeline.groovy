@@ -39,11 +39,11 @@ def SonarQualityGates(STAGE_NAME, QUALITY_GATE_BYPASS){
               	timeout(time: 1, unit: 'HOURS') {
             			def qg = waitForQualityGate()
               			if (qg.status != 'OK') {
-                        //if ( QUALITY_GATE_BYPASS == "true"){
+                        if ( QUALITY_GATE_BYPASS == "true"){
                   				      echo "Bypass SonarQube Quality gate failure: ${qg.status}"
-                        //  } else {
-                        //        error "Pipeline abort due to Quality gate failure: ${qg.status}"
-                        //  }
+                          } else {
+                                error "Pipeline abort due to Quality gate failure: ${qg.status}"
+                          }
          		     		} else {
         				echo "Sonar Quality gates passed."
         			        }
