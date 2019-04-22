@@ -146,7 +146,8 @@ def KubernetesDeployment(STAGE_NAME, CLUSTER_NAME, API_END_POINT, KUBERNETES_CRE
 
 def PipelineLogsArtifact(STAGE_NAME){
     stage(STAGE_NAME){
-      archiveArtifacts artifacts: "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log", fingerprint: true
+      sh "cat ${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log >> pipeline_logs.txt"
+      archiveArtifacts artifacts: "pipeline_logs.txt", fingerprint: true
     }
 }
 
