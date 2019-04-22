@@ -54,10 +54,21 @@ def SonarQualityGates(STAGE_NAME, QUALITY_GATE_BYPASS){
 }
 
 //Code Build
-def SetEnvironment(STAGE_NAME, DOCKER_IMAGE_NAME, STEPS_TO_RUN){
+def SetEnvironment(STAGE_NAME, DOCKER_IMAGE_NAME, STEPS_TO_RUN, BYPASS_ARGUMENT){
   stage(STAGE_NAME){
       docker.image(DOCKER_IMAGE_NAME).inside {
-          sh """ ${STEPS_TO_RUN} """
+          try{
+              sh """ ${STEPS_TO_RUN} """
+          }
+          catch (exc) {
+                echo "Failed to test"
+                if (BYPASS_ARGUMENT == "true"){
+                      echo "Skip failure results"
+                }
+                else {
+                      throw(exc)
+                }
+          }
       }
   }
 }
