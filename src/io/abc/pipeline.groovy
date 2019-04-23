@@ -15,7 +15,7 @@ def Initialize_Workspace(STAGE_NAME) {
 def CheckOutScm(STAGE_NAME, REPOSITORY_NAME, BRANCH_NAME, CREDENTIAL_ID){
    stage(STAGE_NAME){
       checkout([$class: 'GitSCM', branches: [[name: BRANCH_NAME]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: CREDENTIAL_ID, url: REPOSITORY_NAME]]])
-      gitBranch = BRANCHNAME
+      gitBranch = BRANCH_NAME
    }
 }
 
